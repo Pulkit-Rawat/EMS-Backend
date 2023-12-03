@@ -12,7 +12,7 @@ const userActions = {
         emptyErr.push(`${d} is required`);
       }
     }
-    if (emptyErr.lenght) {
+    if (emptyErr.length) {
       return res.status(403).json({
         message: "All fields are required",
         error: emptyErr,

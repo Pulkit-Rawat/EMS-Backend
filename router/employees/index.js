@@ -3,5 +3,6 @@ const empActions = require("./actions");
 const empRouter = Router();
 
 empRouter.get("/getAllEmployee", empActions.getAllEmployee);
+empRouter.post("/assignDeptToEmployee", empActions.assignDepartmentToEmployee);
 
 module.exports = empRouter;

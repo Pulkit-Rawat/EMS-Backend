@@ -1,5 +1,5 @@
 const User = require("../../models/Users");
-
+const UserDepartment = require("../../models/UserDepartments");
 const empActions = {
   getAllEmployee: async (req, res) => {
     try {
@@ -21,6 +21,31 @@ const empActions = {
       console.log(err);
       return res.status(500).json({
         message: "Something went wrong...",
+      });
+    }
+  },
+  assignDepartmentToEmployee: async (req, res) => {
+    try {
+      let { dptId, userId } = req.body;
+      let resData = await UserDepartment.create({
+        dptId: dptId,
+        userId: userId,
+      });
+      if (resData) {
+        return res.status(200).json({
+          message: "Department assigned.",
+          success: true,
+        });
+      }
+      return res.status(401).json({
+        message: "Something went wrong.",
+        success: false,
+      });
+    } catch (err) {
+      console.log("err", err);
+      return res.status(401).json({
+        message: "Something went wrong.",
+        success: false,
       });
     }
   },

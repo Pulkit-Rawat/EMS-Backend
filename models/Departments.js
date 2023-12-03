@@ -9,6 +9,9 @@ const departmentSchema = new Schema({
     type: String,
     required: true,
   },
+  isActive: {
+    type: String,
+  },
 });
 
 const Departments = model("departments", departmentSchema);
