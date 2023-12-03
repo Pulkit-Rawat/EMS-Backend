@@ -49,6 +49,28 @@ const empActions = {
       });
     }
   },
+  getEmployeeByID: async (req, res) => {
+    let { id } = req.body;
+    try {
+      let user = await User.findOne({ _id: id });
+      if (user) {
+        return res.status(200).json({
+          message: "Employees list found.",
+          data: user,
+          success: true,
+        });
+      }
+      return res.status(401).json({
+        message: "Something went wrong.",
+        success: false,
+      });
+    } catch (err) {
+      return res.status(401).json({
+        message: "Something went wrong.",
+        success: false,
+      });
+    }
+  },
 };
 
 module.exports = empActions;

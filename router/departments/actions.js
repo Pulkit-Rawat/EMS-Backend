@@ -1,4 +1,6 @@
 const Department = require("../../models/Departments");
+const UserDepartments = require("../../models/UserDepartments");
+const User = require("../../models/Users");
 
 const dptActions = {
   create: async (req, res) => {
@@ -85,6 +87,34 @@ const dptActions = {
       console.log(err);
       return res.status(500).json({
         message: "Something went wrong...",
+      });
+    }
+  },
+  getDepartmentByID: async (req, res) => {
+    let { id } = req.body;
+    try {
+      let dpt = await Department.findOne({ _id: id });
+
+      //find assigned employee details
+      let records = await UserDepartments.find({ dptId: id });
+      records = records.map((item) => item.userId);
+      let empList = await User.find({ _id: { $in: records } });
+      if (dpt) {
+        return res.status(200).json({
+          message: "Department details found.",
+          data: dpt,
+          empList: empList,
+          success: true,
+        });
+      }
+      return res.status(401).json({
+        message: "No record found.",
+        success: false,
+      });
+    } catch (err) {
+      return res.status(401).json({
+        message: "Something went wrong.",
+        success: false,
       });
     }
   },

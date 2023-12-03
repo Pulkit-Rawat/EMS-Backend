@@ -13,7 +13,7 @@ const userActions = {
       }
     }
     if (emptyErr.length) {
-      return res.status(403).json({
+      return res.status(200).json({
         message: "All fields are required",
         error: emptyErr,
         success: false,
@@ -26,7 +26,7 @@ const userActions = {
 
       //check if email is already registered
       if (user) {
-        return res.status(403).json({
+        return res.status(200).json({
           message: "Email already registered.",
           success: false,
         });
@@ -35,7 +35,7 @@ const userActions = {
       //check if phone number is already registered
       user = await User.findOne({ mob });
       if (user) {
-        return res.status(403).json({
+        return res.status(200).json({
           message: "Phone Number already registered.",
           success: false,
         });
@@ -62,18 +62,20 @@ const userActions = {
           success: true,
           data: {
             token: token,
+            userName: user.userName,
+            role: user.role,
           },
         });
       }
 
       //default case error
-      return res.status(401).json({
+      return res.status(200).json({
         message: "Something went wrong.",
         success: false,
       });
     } catch (err) {
       console.log(err);
-      return res.status(500).json({
+      return res.status(200).json({
         message: "Something went wrong...",
       });
     }
@@ -85,7 +87,7 @@ const userActions = {
 
       let user = await User.findOne({ email });
       if (!user) {
-        return res.status(403).json({
+        return res.status(200).json({
           message: "Email not registered",
           success: false,
         });
@@ -93,7 +95,7 @@ const userActions = {
       let isValidPwd = await compare(password, user.password);
 
       if (!isValidPwd) {
-        return res.status(403).json({
+        return res.status(200).json({
           message: "Password is invalid",
           success: false,
         });
@@ -110,6 +112,7 @@ const userActions = {
         message: "Logged In.",
         success: true,
         data: {
+          userName: user.userName,
           role: user.role,
           token: token,
         },
